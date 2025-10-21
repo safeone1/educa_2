@@ -32,6 +32,7 @@ const LoginPage = () => {
       await authClient.signIn.email({
         email: data.email,
         password: data.password,
+        callbackURL: "/dashboard",
       });
     } catch (error) {
       console.error("Login error:", error);
