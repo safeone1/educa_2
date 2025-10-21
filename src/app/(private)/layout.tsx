@@ -1,11 +1,19 @@
 import { DashboardSidebar } from "@/components/dashboard-sidebar";
+import { auth } from "@/lib/auth";
 import React from "react";
-
+import { headers } from "next/headers";
 interface layoutProps {
   children: React.ReactNode;
 }
 
-const layout = ({ children }: layoutProps) => {
+const layout = async ({ children }: layoutProps) => {
+  const session = auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return <div>Please log in to access the dashboard.</div>;
+  }
   return (
     <div className="flex h-screen ">
       <DashboardSidebar />
