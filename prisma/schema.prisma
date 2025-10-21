@@ -111,6 +111,7 @@ model Exam {
   status ExamStatus @default(Scheduled)
   ExamCandidates ExamCandidate[]
   @@unique([id, date])
+  ExamSupervisor ExamSupervisor[]
 }
 
 
@@ -120,15 +121,21 @@ model ExamCandidate  {
   examNum String // N° Exam from CSV (can contain letters/prefixes)
   examId String
   exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
-  studentId String 
   createdAt DateTime @default(now())
   tableId String?
   table Table? @relation(fields: [tableId], references: [id])
   isPresent Boolean @default(false)
   checkoutAt DateTime?
-  @@unique([examId, studentId]) 
+  @@unique([examId, id]) 
 }
 
+model ExamSupervisor {
+  id String @id @default(cuid())
+  examId String
+  exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+  supervisorName String
+  createdAt DateTime @default(now())
+}
 
 model Table {
   id String @id @default(cuid())
